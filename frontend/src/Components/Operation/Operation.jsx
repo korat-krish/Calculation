@@ -1,9 +1,10 @@
 import { useState } from "react";
 import axios from 'axios'
-const Operations = (req, res) => {
+const Operations = (req, res , index) => {
     const [value1, setValue1] = useState(0)
     const [value2, setValue2] = useState(0)
     const [result, setResult] = useState(null)
+    const [data , setData] = useState({});
 
     const handleCalculation = async (e) => {
         e.preventDefault();
@@ -35,6 +36,17 @@ const Operations = (req, res) => {
         }
     };
 
+    const showdata =async (e) =>{
+        e.preventDefault();
+        try{
+            const response = await axios.get('http://localhost:5001/api/getallhistory')
+            console.log(response);
+             setData(response.data);
+        } catch (error) {
+            console.log("error is :",error);
+        }
+    }
+
     return (
         <>
             <h2>
@@ -50,7 +62,25 @@ const Operations = (req, res) => {
                 <button onClick={handleSubtraction}>sub </button>
             </form>
 
+            <button onClick={showdata}> Show data </button>
+
             <h2>Sub is {result}</h2>
+
+           <ul>
+           {
+                data.length > 0 ? (
+                    data.map((item , index)=>(
+
+                        <li key={item._id}>
+                            value1 : {item.value1} | value1 : {item.value2} result : {item.result}  
+                        </li>
+                    ))
+                ) : (
+                    <p>No history found.</p>
+                )}
+        </ul>
+
+
         </>
     )
 }

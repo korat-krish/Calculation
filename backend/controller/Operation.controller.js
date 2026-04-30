@@ -34,4 +34,21 @@ const substraction = async (req, res) => {
    res.status(200).json({ sub: sub });
 }
 
-module.exports = { addition, substraction }
+const getallhistory =async (req,res) =>{
+
+   try
+   {
+      const data = await Operation.find();
+   
+      data.map((ele)=>{
+         console.log(`value 1 ${ele.value1} ,value 2 ${ele.value2} ,result ${ele.result} ,`)
+      })
+   
+      res.status(200).json(data);
+
+   } catch (error) {
+      console.log("error is :", error);
+   }
+}
+
+module.exports = { addition, substraction,getallhistory }
